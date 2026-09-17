@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comprar ou Alugar no Litoral? — Praia Digital</title>
+<meta name="description" content="A decisão financeira mais importante: compare comprar ou alugar um imóvel no litoral paulista.">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,sans-serif}
+  body{background:#f0f9ff;color:#0f172a;min-height:100vh}
+  header{background:linear-gradient(135deg,#0077B6,#00B4D8);color:#fff;padding:1rem 1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem}
+  header a{color:#fff;text-decoration:none;font-weight:700}.logo{font-size:1.2rem}
+  main{max-width:700px;margin:2rem auto;padding:0 1rem}
+  .card{background:#fff;border-radius:16px;padding:1.75rem;box-shadow:0 4px 24px rgba(0,60,100,.08)}
+  h1{font-size:1.5rem;color:#0077B6}.sub{color:#64748b;margin:.3rem 0 1.2rem;font-size:.95rem}
+  label{display:block;font-weight:600;font-size:.85rem;margin:.9rem 0 .3rem}
+  input{width:100%;padding:.7rem;border:1px solid #cbd5e1;border-radius:10px;font-size:1rem}
+  button{width:100%;margin-top:1.3rem;padding:.9rem;border:0;border-radius:12px;background:#0077B6;color:#fff;font-weight:800;font-size:1rem;cursor:pointer}
+  .vs{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.3rem}
+  @media(max-width:600px){.vs{grid-template-columns:1fr}}
+  .col{border-radius:14px;padding:1.1rem;text-align:center}
+  .a{background:#eff6ff;border:1px solid #93c5fd}.b{background:#f0fdf4;border:1px solid #86efac}
+  .big{font-size:1.35rem;font-weight:800;color:#0369a1;margin:.3rem 0}
+  #verdict{margin-top:1rem;background:#ecfeff;border:1px solid #67e8f9;border-radius:12px;padding:1rem;font-size:.95rem;display:none}
+</style>
+</head>
+<body>
+<header>
+  <a class="logo" href="https://praia.digital/">🏖️ Praia Digital</a>
+  <a href="https://praia.digital/calculadora-custos">← Calculadora de Custos</a>
+</header>
+<main>
+  <div class="card">
+    <h1>⚖️ Comprar ou Alugar?</h1>
+    <p class="sub">Simulação de patrimônio em 10 anos nas duas estratégias.</p>
+    <label>Valor do imóvel (R$)</label><input type="number" id="valor" value="500000">
+    <label>Aluguel mensal equivalente (R$)</label><input type="number" id="aluguel" value="2200">
+    <label>Entrada disponível (R$)</label><input type="number" id="entrada" value="100000">
+    <button onclick="cmp()">Comparar em 10 anos</button>
+    <div class="vs" id="vs" style="display:none">
+      <div class="col a"><h3>🏠 Comprando</h3><div class="big" id="vA"></div><small id="dA"></small></div>
+      <div class="col b"><h3>🔑 Alugando + investindo</h3><div class="big" id="vB"></div><small id="dB"></small></div>
+    </div>
+    <div id="verdict"></div>
+  </div>
+</main>
+<script>
+var fmt=function(n){return n.toLocaleString('pt-BR',{style:'currency',currency:'BRL',maximumFractionDigits:0})};
+function cmp(){
+  var v=parseFloat(document.getElementById('valor').value)||0;
+  var al=parseFloat(document.getElementById('aluguel').value)||0;
+  var e=parseFloat(document.getElementById('entrada').value)||0;
+  // Comprar: imóvel valoriza 10%/ano; parcela Price 30 anos 10.5% sobre (v-e)
+  var P=v-e, i=0.105/12, n=360;
+  var par=P*i/(1-Math.pow(1+i,-n));
+  var imovel10=v*Math.pow(1.10,10);
+  // Alugar: investe entrada + diferença (parcela - aluguel) a 10%/ano
+  var inv=e, diff=Math.max(0,par-al);
+  for(var m=0;m<120;m++){inv*=Math.pow(1.10,1/12);inv+=diff;}
+  document.getElementById('vs').style.display='grid';
+  document.getElementById('vA').textContent=fmt(imovel10);
+  document.getElementById('dA').textContent='Imóvel valorizado · parcela '+fmt(par)+'/mês';
+  document.getElementById('vB').textContent=fmt(inv);
+  document.getElementById('dB').textContent='Entrada investida a 10%/ano + diferença mensal';
+  document.getElementById('verdict').style.display='block';
+  document.getElementById('verdict').innerHTML=imovel10>inv
+    ? '🏆 <b>Comprar vence</b> no patrimônio em 10 anos ('+fmt(imovel10-inv)+' a mais), graças à valorização imobiliária do litoral. Simule sua parcela no <a href="https://praia.digital/simulador-credito" style="color:#0077B6;font-weight:700">Simulador de Crédito</a>.'
+    : '🏆 <b>Alugar e investir vence</b> financeiramente — mas comprar traz estabilidade e teto próprio. Veja a <a href="https://praia.digital/calculadora-custos/entrada-ideal/" style="color:#0077B6;font-weight:700">Entrada Ideal</a>.';
+}
+</script>
+</body>
+</html>
