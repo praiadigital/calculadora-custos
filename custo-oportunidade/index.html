@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Custo de Oportunidade da Entrada — Praia Digital</title>
+<meta name="description" content="Dar uma entrada maior ou investir a diferença? Compare os dois cenários no financiamento do seu imóvel.">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,sans-serif}
+  body{background:#f0f9ff;color:#0f172a;min-height:100vh}
+  header{background:linear-gradient(135deg,#0077B6,#00B4D8);color:#fff;padding:1rem 1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem}
+  header a{color:#fff;text-decoration:none;font-weight:700}.logo{font-size:1.2rem}
+  main{max-width:680px;margin:2rem auto;padding:0 1rem}
+  .card{background:#fff;border-radius:16px;padding:1.75rem;box-shadow:0 4px 24px rgba(0,60,100,.08)}
+  h1{font-size:1.5rem;color:#0077B6}.sub{color:#64748b;margin:.3rem 0 1.2rem;font-size:.95rem}
+  label{display:block;font-weight:600;font-size:.85rem;margin:.9rem 0 .3rem}
+  input{width:100%;padding:.7rem;border:1px solid #cbd5e1;border-radius:10px;font-size:1rem}
+  button{width:100%;margin-top:1.3rem;padding:.9rem;border:0;border-radius:12px;background:#0077B6;color:#fff;font-weight:800;font-size:1rem;cursor:pointer}
+  .vs{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.3rem}
+  @media(max-width:600px){.vs{grid-template-columns:1fr}}
+  .col{border-radius:14px;padding:1.1rem}
+  .a{background:#eff6ff;border:1px solid #93c5fd}.b{background:#f0fdf4;border:1px solid #86efac}
+  .col h3{font-size:.95rem;margin-bottom:.5rem}
+  .big{font-size:1.25rem;font-weight:800;color:#0369a1}
+  #verdict{margin-top:1rem;background:#ecfeff;border:1px solid #67e8f9;border-radius:12px;padding:1rem;font-size:.95rem;display:none}
+</style>
+</head>
+<body>
+<header>
+  <a class="logo" href="https://praia.digital/">🏖️ Praia Digital</a>
+  <a href="https://praia.digital/calculadora-custos">← Calculadora de Custos</a>
+</header>
+<main>
+  <div class="card">
+    <h1>💭 Custo de Oportunidade da Entrada</h1>
+    <p class="sub">Tenho R$ 200 mil: dou tudo de entrada ou dou o mínimo e invisto o resto?</p>
+    <label>Valor do imóvel (R$)</label><input type="number" id="valor" value="500000">
+    <label>Valor disponível para entrada (R$)</label><input type="number" id="caixa" value="200000">
+    <label>Rendimento de investimentos (% ao ano)</label><input type="number" id="rend" value="10" step="0.5">
+    <button onclick="cmp()">Comparar cenários</button>
+    <div class="vs" id="vs" style="display:none">
+      <div class="col a"><h3>💰 Entrada máxima</h3><div class="big" id="aP"></div><small id="aD"></small></div>
+      <div class="col b"><h3>📈 Entrada mínima + investir</h3><div class="big" id="bP"></div><small id="bD"></small></div>
+    </div>
+    <div id="verdict"></div>
+  </div>
+</main>
+<script>
+var fmt=function(n){return n.toLocaleString('pt-BR',{style:'currency',currency:'BRL',maximumFractionDigits:0})};
+function cmp(){
+  var v=parseFloat(document.getElementById('valor').value)||0;
+  var cx=parseFloat(document.getElementById('caixa').value)||0;
+  var r=parseFloat(document.getElementById('rend').value)/100;
+  var i=0.105/12, n=360;
+  // Cenário A: entrada máxima
+  var PA=Math.max(0,v-cx), parA=PA*i/(1-Math.pow(1+i,-n));
+  var jurosA=parA*n-PA;
+  // Cenário B: entrada mínima 20%, investe o resto
+  var eMin=v*0.2, inv=cx-eMin;
+  var PB=v-eMin, parB=PB*i/(1-Math.pow(1+i,-n));
+  var jurosB=parB*n-PB;
+  var invFinal=inv*Math.pow(1+r,30);
+  document.getElementById('vs').style.display='grid';
+  document.getElementById('aP').textContent=fmt(parA)+'/mês';
+  document.getElementById('aD').textContent='Juros totais: '+fmt(jurosA)+' · sem reserva investida';
+  document.getElementById('bP').textContent=fmt(parB)+'/mês';
+  document.getElementById('bD').textContent='Juros totais: '+fmt(jurosB)+' · investimento vira '+fmt(invFinal)+' em 30 anos';
+  var diff=invFinal-(jurosB-jurosA);
+  document.getElementById('verdict').style.display='block';
+  document.getElementById('verdict').innerHTML=diff>0
+    ? '📈 <b>Entrada mínima vence no longo prazo:</b> investir a diferença rende '+fmt(diff)+' a mais do que os juros extras. Mas exige disciplina para não gastar a reserva! Compare na <a href="https://praia.digital/calculadora-custos/entrada-ideal/" style="color:#0077B6;font-weight:700">Entrada Ideal</a>.'
+    : '💰 <b>Entrada máxima vence:</b> os juros economizados superam o rendimento. Crédito imobiliário é caro — quitar antes compensa. Veja a <a href="https://praia.digital/simulador-credito/amortizacao/" style="color:#0077B6;font-weight:700">Amortização</a>.';
+}
+</script>
+</body>
+</html>
