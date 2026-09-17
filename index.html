@@ -1,101 +1,41 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Calculadora de Custos de Compra — Praia Digital</title>
-<meta name="description" content="ITBI, escritura, registro e corretagem: descubra o custo total para comprar seu imóvel no litoral.">
-<style>
-  *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,sans-serif}
-  body{background:#f0f9ff;color:#0f172a;min-height:100vh}
-  header{background:linear-gradient(135deg,#0077B6,#00B4D8);color:#fff;padding:1rem 1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem}
-  header a{color:#fff;text-decoration:none;font-weight:700}
-  .logo{font-size:1.2rem}
-  main{max-width:720px;margin:2rem auto;padding:0 1rem}
-  .card{background:#fff;border-radius:16px;padding:1.75rem;box-shadow:0 4px 24px rgba(0,60,100,.08)}
-  h1{font-size:1.6rem;color:#0077B6;margin-bottom:.4rem}
-  .sub{color:#64748b;margin-bottom:1.25rem;font-size:.95rem}
-  label{display:block;font-weight:600;font-size:.85rem;margin:1rem 0 .3rem}
-  input,select{width:100%;padding:.7rem;border:1px solid #cbd5e1;border-radius:10px;font-size:1rem}
-  button{width:100%;margin-top:1.4rem;padding:.9rem;border:0;border-radius:12px;background:linear-gradient(135deg,#0077B6,#00B4D8);color:#fff;font-size:1.05rem;font-weight:800;cursor:pointer}
-  table{width:100%;border-collapse:collapse;margin-top:1.4rem;font-size:.95rem}
-  td{padding:.6rem .4rem;border-bottom:1px solid #e2e8f0}
-  td:last-child{text-align:right;font-weight:700}
-  .total td{font-size:1.15rem;color:#0077B6;border-top:2px solid #0077B6;border-bottom:0}
-  #result{display:none}
-  footer{background:#023047;color:#cbd5e1;padding:2rem 1.5rem;margin-top:3rem}
-  footer h4{color:#fff;font-size:.85rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.8rem}
-  .links{display:flex;flex-wrap:wrap;gap:.5rem 1.25rem}
-  .links a{color:#90E0EF;text-decoration:none;font-size:.85rem}
-</style>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de Custos — ITBI, registro e corretagem | Praia Digital</title>
+<meta name="description" content="Calcule todos os custos da compra de imóvel no litoral: ITBI, escritura, registro, cartório e corretagem. Sem surpresas.">
+<link rel="canonical" href="https://praia.digital/calculadora-custos/">
+<style>:root{--azul:#0a2540;--mar:#0e7490;--areia:#f8f5ef}*{margin:0;box-sizing:border-box;font-family:system-ui,sans-serif}body{background:var(--areia);color:#1e293b}header{background:linear-gradient(135deg,var(--azul),var(--mar));color:#fff;padding:2.5rem 1.5rem;text-align:center}.badge{display:inline-block;background:rgba(255,255,255,.15);padding:.25rem .8rem;border-radius:999px;font-size:.8rem;margin-bottom:.8rem}main{max-width:720px;margin:2rem auto;padding:0 1.25rem}.card{background:#fff;border-radius:1rem;padding:1.75rem;box-shadow:0 4px 24px rgba(10,37,64,.08);margin-bottom:1.5rem}label{display:block;font-weight:600;margin:1rem 0 .35rem}input,select{width:100%;padding:.7rem;border:1px solid #cbd5e1;border-radius:.5rem;font-size:1rem}button{width:100%;margin-top:1.4rem;background:var(--mar);color:#fff;border:0;padding:.9rem;font-size:1.05rem;font-weight:700;border-radius:.6rem;cursor:pointer}table{width:100%;border-collapse:collapse;margin-top:1rem;font-size:.95rem}td,th{padding:.55rem;border-bottom:1px solid #e2e8f0;text-align:left}td:last-child{text-align:right}.total td{font-weight:800;font-size:1.1rem;color:var(--azul);border-top:2px solid var(--mar)}#out{display:none}.rede{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.75rem}.rede a{background:#fff;border:1px solid #e2e8f0;border-radius:.6rem;padding:.8rem;text-decoration:none;color:var(--azul);font-weight:600;font-size:.9rem}footer{text-align:center;padding:2rem;color:#64748b;font-size:.85rem}footer a{color:var(--mar)}</style>
 </head>
 <body>
-<header>
-  <a class="logo" href="https://praia.digital/">🏖️ Praia Digital</a>
-  <a href="https://praia.digital/apps">← Todos os apps</a>
-</header>
+<header><span class="badge">🛰️ App satélite de <a href="https://praia.digital" style="color:#fff">praia.digital</a></span><h1>🧾 Calculadora de Custos</h1><p>Todos os custos da compra do seu imóvel no litoral — sem surpresas</p></header>
 <main>
-  <div class="card">
-    <h1>Calculadora de Custos de Compra</h1>
-    <p class="sub">Além do preço do imóvel, veja ITBI, cartório e taxas — sem surpresas na escritura.</p>
-    <label for="valor">Valor do imóvel (R$)</label>
-    <input type="number" id="valor" value="500000" min="50000" step="10000">
-    <label for="cidade">Cidade (alíquota ITBI)</label>
-    <select id="cidade">
-      <option value="0.03">Santos (3%)</option><option value="0.03">Guarujá (3%)</option>
-      <option value="0.025">Praia Grande (2,5%)</option><option value="0.02">São Vicente (2%)</option>
-      <option value="0.02">Bertioga (2%)</option><option value="0.02">Mongaguá (2%)</option>
-      <option value="0.02">Itanhaém (2%)</option><option value="0.02">Peruíbe (2%)</option>
-    </select>
-    <label for="fin">Vai financiar?</label>
-    <select id="fin"><option value="nao">Não — pagamento à vista</option><option value="sim">Sim — financiamento (registro ~1%)</option></select>
-    <button onclick="calc()">Calcular custo total</button>
-    <div id="result">
-      <table>
-        <tr><td>ITBI</td><td id="rItbi"></td></tr>
-        <tr><td>Escritura pública (~1%)</td><td id="rEsc"></td></tr>
-        <tr><td>Registro de imóvel (~0,5%)</td><td id="rReg"></td></tr>
-        <tr id="rowFin" style="display:none"><td>Registro do financiamento (~1%)</td><td id="rFin"></td></tr>
-        <tr><td>Certidões e diligências</td><td id="rCert"></td></tr>
-        <tr class="total"><td>Custo total da compra</td><td id="rTotal"></td></tr>
-        <tr class="total" style="font-size:.9rem"><td>Percentual sobre o imóvel</td><td id="rPct"></td></tr>
-      </table>
-      <p style="margin-top:1rem"><a href="https://wa.me/5511954346288" style="color:#0077B6;font-weight:700">Planejar minha compra com um especialista →</a></p>
-    </div>
-  </div>
+<div class="card">
+<label>Valor do imóvel (R$)</label><input id="valor" type="number" value="600000">
+<label>Cidade (alíquota de ITBI)</label><select id="itbi"><option value="0.03">Guarujá (3%)</option><option value="0.02">Santos (2%)</option><option value="0.03">São Sebastião (3%)</option><option value="0.03">Ubatuba (3%)</option><option value="0.02">Caraguatatuba (2%)</option><option value="0.02">Bertioga / Riviera (2%)</option><option value="0.02">Mongaguá (2%)</option><option value="0.02">Itanhaém (2%)</option></select>
+<label>Corretagem</label><select id="corr"><option value="0.06">6% (padrão)</option><option value="0.05">5% (negociada)</option><option value="0">Venda direta (0%)</option></select>
+<label>Vai financiar?</label><select id="fin"><option value="0">Não</option><option value="0.01">Sim (+~1% de custas do financiamento)</option></select>
+<button onclick="calcular()">Calcular custos totais</button>
+</div>
+<div class="card" id="out"><h3>Composição dos custos</h3><table><tbody id="tb"></tbody></table>
+<p style="margin-top:1rem;font-size:.9rem">Simule o financiamento no <a href="https://praia.digital/simulador-credito">Simulador de Crédito</a> e avalie o imóvel no <a href="https://praia.digital/avaliador-imoveis">Avaliador de Imóveis</a>.</p></div>
+<h2 style="margin:1.5rem 0 .8rem">🌐 Rede Praia Digital</h2>
+<div class="rede">
+<a href="https://praia.digital">🏠 Portal Praia Digital</a>
+<a href="https://praia.digital/plano-litoral">📋 Plano Litoral</a>
+<a href="https://praia.digital/guia-comprador">📖 Guia do Comprador</a>
+<a href="https://praia.digital/calculadoras">🧮 Calculadoras</a>
+<a href="https://praia.digital/apps">🛰️ Todos os apps</a>
+</div>
 </main>
-<footer>
-  <h4>Rede de apps Praia Digital</h4>
-  <div class="links">
-    <a href="https://praia.digital/avaliador-imoveis">Avaliador IA</a>
-    <a href="https://praia.digital/simulador-credito">Simulador Crédito</a>
-    <a href="https://praia.digital/simulador-roi">Simulador ROI</a>
-    <a href="https://praia.digital/calculadoras">Calculadoras</a>
-    <a href="https://praia.digital/ferramentas">Kit do Anfitrião</a>
-    <a href="https://praia.digital/gerador-descricoes">Gerador de Descrições</a>
-    <a href="https://praia.digital/portal-corretores">Portal do Corretor</a>
-    <a href="https://praia.digital/guia-litoral">Guia do Litoral</a>
-    <a href="https://praia.digital/blog-litoral">Blog</a>
-  </div>
-</footer>
+<footer>Feito com 🌊 pela rede <a href="https://praia.digital">Praia Digital</a> · <a href="https://github.com/praiadigital/calculadora-custos">código aberto no GitHub</a></footer>
 <script>
-function calc(){
-  var v=parseFloat(document.getElementById('valor').value)||0;
-  var itbi=parseFloat(document.getElementById('cidade').value);
-  var fin=document.getElementById('fin').value==='sim';
-  var fmt=function(n){return n.toLocaleString('pt-BR',{style:'currency',currency:'BRL',maximumFractionDigits:0})};
-  var rItbi=v*itbi, rEsc=v*0.01, rReg=v*0.005, rFin=fin?v*0.01:0, rCert=800;
-  var total=rItbi+rEsc+rReg+rFin+rCert;
-  document.getElementById('rItbi').textContent=fmt(rItbi);
-  document.getElementById('rEsc').textContent=fmt(rEsc);
-  document.getElementById('rReg').textContent=fmt(rReg);
-  document.getElementById('rFin').textContent=fmt(rFin);
-  document.getElementById('rCert').textContent=fmt(rCert);
-  document.getElementById('rTotal').textContent=fmt(total);
-  document.getElementById('rPct').textContent=(total/v*100).toFixed(1)+'%';
-  document.getElementById('rowFin').style.display=fin?'table-row':'none';
-  document.getElementById('result').style.display='block';
+const BRL=v=>'R$ '+Math.round(v).toLocaleString('pt-BR');
+function calcular(){
+const V=+valor.value||0,itbi=V*(+itbi.value),escr=V*0.005,reg=V*0.01,cart=2500,corr=V*(+corr.value),fin=V*(+fin.value);
+const total=itbi+escr+reg+cart+corr+fin;
+out.style.display='block';
+tb.innerHTML=`<tr><td>ITBI</td><td>${BRL(itbi)}</td></tr><tr><td>Escritura pública (~0,5%)</td><td>${BRL(escr)}</td></tr><tr><td>Registro em cartório (~1%)</td><td>${BRL(reg)}</td></tr><tr><td>Emolumentos e certidões</td><td>${BRL(cart)}</td></tr><tr><td>Corretagem</td><td>${BRL(corr)}</td></tr><tr><td>Custas do financiamento</td><td>${BRL(fin)}</td></tr><tr class="total"><td>Custo total (${(total/V*100).toFixed(1)}%)</td><td>${BRL(total)}</td></tr><tr class="total"><td>💰 Desembolso total (imóvel + custos)</td><td>${BRL(V+total)}</td></tr>`;
 }
 </script>
-</body>
-</html>
+</body></html>
