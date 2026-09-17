@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Custos de Vender um Imóvel — Praia Digital</title>
+<meta name="description" content="Corretagem, imposto sobre ganho de capital e certidões: quanto custa vender seu imóvel no litoral.">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,sans-serif}
+  body{background:#f0f9ff;color:#0f172a;min-height:100vh}
+  header{background:linear-gradient(135deg,#0077B6,#00B4D8);color:#fff;padding:1rem 1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem}
+  header a{color:#fff;text-decoration:none;font-weight:700}.logo{font-size:1.2rem}
+  main{max-width:700px;margin:2rem auto;padding:0 1rem}
+  .card{background:#fff;border-radius:16px;padding:1.75rem;box-shadow:0 4px 24px rgba(0,60,100,.08)}
+  h1{font-size:1.5rem;color:#0077B6}.sub{color:#64748b;margin:.3rem 0 1.2rem;font-size:.95rem}
+  label{display:block;font-weight:600;font-size:.85rem;margin:.9rem 0 .3rem}
+  input,select{width:100%;padding:.7rem;border:1px solid #cbd5e1;border-radius:10px;font-size:1rem}
+  button{width:100%;margin-top:1.3rem;padding:.9rem;border:0;border-radius:12px;background:#0077B6;color:#fff;font-weight:800;font-size:1rem;cursor:pointer}
+  #out{display:none;margin-top:1.3rem}
+  table{width:100%;border-collapse:collapse;font-size:.92rem;margin-top:.5rem}
+  td{padding:.55rem .4rem;border-bottom:1px solid #e2e8f0}td:last-child{text-align:right;font-weight:700}
+  .total td{font-size:1.1rem;color:#b91c1c;border-top:2px solid #b91c1c}
+  .liq td{color:#166534;border-top:2px solid #166534;font-size:1.1rem}
+  .dica{margin-top:1rem;background:#fef9c3;border:1px solid #fde047;border-radius:12px;padding:1rem;font-size:.85rem}
+</style>
+</head>
+<body>
+<header>
+  <a class="logo" href="https://praia.digital/">🏖️ Praia Digital</a>
+  <a href="https://praia.digital/calculadora-custos">← Calculadora de Custos</a>
+</header>
+<main>
+  <div class="card">
+    <h1>🏷️ Custos de Vender seu Imóvel</h1>
+    <p class="sub">Vender também tem custos. Saiba quanto realmente entra no seu bolso.</p>
+    <label>Valor de venda (R$)</label><input type="number" id="venda" value="600000" step="10000">
+    <label>Valor que você pagou na compra (R$)</label><input type="number" id="compra" value="400000" step="10000">
+    <label>Comissão do corretor (%)</label><input type="number" id="comissao" value="6" step="0.5">
+    <label>É seu único imóvel e valor até R$ 440 mil?</label>
+    <select id="isento"><option value="nao" selected>Não / não se aplica</option><option value="sim">Sim (isenção de IR)</option></select>
+    <button onclick="calc()">Calcular líquido da venda</button>
+    <div id="out"></div>
+    <div class="dica">⚠️ Ganho de capital: 15% sobre o lucro (isento se único imóvel até R$ 440 mil ou se comprar outro em 180 dias). Consulte um contador para casos específicos.</div>
+  </div>
+</main>
+<script>
+var fmt=function(n){return n.toLocaleString('pt-BR',{style:'currency',currency:'BRL',maximumFractionDigits:0})};
+function calc(){
+  var v=parseFloat(document.getElementById('venda').value)||0;
+  var c=parseFloat(document.getElementById('compra').value)||0;
+  var pct=parseFloat(document.getElementById('comissao').value)/100;
+  var isento=document.getElementById('isento').value==='sim';
+  var corr=v*pct, ganho=Math.max(0,v-c), ir=isento?0:ganho*0.15, cert=900;
+  var total=corr+ir+cert, liquido=v-total;
+  document.getElementById('out').innerHTML='<table>'+
+    '<tr><td>Comissão ('+pct*100+'%)</td><td>-'+fmt(corr)+'</td></tr>'+
+    '<tr><td>IR ganho de capital'+(isento?' (isento ✅)':'')+'</td><td>-'+fmt(ir)+'</td></tr>'+
+    '<tr><td>Certidões e cartório</td><td>-'+fmt(cert)+'</td></tr>'+
+    '<tr class="total"><td>Custos totais</td><td>-'+fmt(total)+'</td></tr>'+
+    '<tr class="liq"><td>💰 Líquido no seu bolso</td><td>'+fmt(liquido)+'</td></tr></table>';
+  document.getElementById('out').style.display='block';
+}
+</script>
+</body>
+</html>
