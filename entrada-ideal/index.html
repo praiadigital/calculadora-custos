@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulador de Entrada Ideal — Praia Digital</title>
+<meta name="description" content="Quanto dar de entrada no imóvel? Compare cenários de 10%, 20% e 30% e veja o impacto na parcela.">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,sans-serif}
+  body{background:#f0f9ff;color:#0f172a;min-height:100vh}
+  header{background:linear-gradient(135deg,#0077B6,#00B4D8);color:#fff;padding:1rem 1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem}
+  header a{color:#fff;text-decoration:none;font-weight:700}.logo{font-size:1.2rem}
+  main{max-width:720px;margin:2rem auto;padding:0 1rem}
+  .card{background:#fff;border-radius:16px;padding:1.75rem;box-shadow:0 4px 24px rgba(0,60,100,.08)}
+  h1{font-size:1.5rem;color:#0077B6}.sub{color:#64748b;margin:.3rem 0 1.2rem;font-size:.95rem}
+  label{display:block;font-weight:600;font-size:.85rem;margin:.9rem 0 .3rem}
+  input{width:100%;padding:.7rem;border:1px solid #cbd5e1;border-radius:10px;font-size:1rem}
+  table{width:100%;border-collapse:collapse;margin-top:1.2rem;font-size:.92rem}
+  th,td{padding:.65rem .5rem;border-bottom:1px solid #e2e8f0;text-align:right}
+  th:first-child,td:first-child{text-align:left}
+  th{color:#0077B6;font-size:.78rem;text-transform:uppercase;letter-spacing:.04em}
+  tr.destaque td{background:#ecfeff;font-weight:700}
+  .dica{margin-top:1.2rem;background:#ecfeff;border:1px solid #67e8f9;border-radius:12px;padding:1rem;font-size:.9rem}
+</style>
+</head>
+<body>
+<header>
+  <a class="logo" href="https://praia.digital/">🏖️ Praia Digital</a>
+  <a href="https://praia.digital/calculadora-custos">← Calculadora de Custos</a>
+</header>
+<main>
+  <div class="card">
+    <h1>💵 Simulador de Entrada Ideal</h1>
+    <p class="sub">Veja como o tamanho da entrada muda sua parcela e o total pago (financiamento Price, 30 anos, 10,5% a.a.).</p>
+    <label>Valor do imóvel (R$)</label>
+    <input type="number" id="valor" value="500000" step="50000" oninput="calc()">
+    <label>Sua renda mensal (R$)</label>
+    <input type="number" id="renda" value="9000" step="500" oninput="calc()">
+    <table>
+      <tr><th>Entrada</th><th>Valor</th><th>Parcela</th><th>% renda</th><th>Total pago</th></tr>
+      <tbody id="rows"></tbody>
+    </table>
+    <div class="dica">💡 Parcela saudável: até <b>30% da renda</b>. Verifique se você pode usar FGTS no <a href="https://praia.digital/simulador-credito/elegibilidade/" style="color:#0077B6;font-weight:700">Verificador de Elegibilidade</a>.</div>
+  </div>
+</main>
+<script>
+var fmt=function(n){return n.toLocaleString('pt-BR',{style:'currency',currency:'BRL',maximumFractionDigits:0})};
+function calc(){
+  var v=parseFloat(document.getElementById('valor').value)||0;
+  var r=parseFloat(document.getElementById('renda').value)||1;
+  var i=0.105/12, n=360;
+  var h='';
+  [0.10,0.20,0.30,0.40].forEach(function(p){
+    var e=v*p, P=v-e;
+    var par=P*i/(1-Math.pow(1+i,-n));
+    var pct=par/r*100;
+    var ok=pct<=30;
+    h+='<tr class="'+(ok?'destaque':'')+'"><td>'+(p*100)+'%'+(ok?' ✓':'')+'</td><td>'+fmt(e)+'</td><td>'+fmt(par)+'</td><td>'+pct.toFixed(0)+'%</td><td>'+fmt(par*n+e)+'</td></tr>';
+  });
+  document.getElementById('rows').innerHTML=h;
+}
+calc();
+</script>
+</body>
+</html>
